@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>井字遊戲 Tic-Tac-Toe</title>
+    <style>
+      :root {
+        --bg: #0b0e14;
+        --panel: #111622;
+        --panel-2: #141a2a;
+        --text: #e6e6e6;
+        --muted: #9aa4b2;
+        --accent: #6ea8fe;
+        --accent-2: #8ed0ff;
+        --x: #ff7a90;
+        --o: #8affc1;
+        --win: #ffd16633;
+        --border: #22304a;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        --radius: 14px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+          Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+        background: radial-gradient(1200px 800px at 20% 10%, #0f1422, var(--bg));
+        color: var(--text);
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .app {
+        width: min(920px, 100%);
+        display: grid;
+        gap: 16px;
+      }
+
+      .topbar {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .card {
+        background: linear-gradient(180deg, var(--panel), var(--panel-2));
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .title {
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 20px;
+        letter-spacing: 0.3px;
+        font-weight: 650;
+      }
+
+      .status {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 12px;
+      }
+
+      .control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #0f1522;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 12px;
+      }
+
+      label {
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.3px;
+      }
+
+      select, button {
+        appearance: none;
+        border: 1px solid var(--border);
+        background: #0c1320;
+        color: var(--text);
+        padding: 8px 10px;
+        border-radius: 10px;
+        font-size: 14px;
+        transition: transform 120ms ease, background 120ms ease, border 120ms ease,
+          box-shadow 120ms ease;
+      }
+
+      select:focus, button:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px #6ea8fe22;
+      }
+
+      button:hover {
+        background: #0e1728;
+        transform: translateY(-1px);
+      }
+
+      .scores {
+        display: flex;
+        gap: 10px;
+        padding: 10px 12px 14px 12px;
+        border-top: 1px dashed var(--border);
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .scores strong {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .board {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        padding: 16px;
+      }
+
+      .cell {
+        aspect-ratio: 1 / 1;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: #0f1522;
+        display: grid;
+        place-items: center;
+        font-size: clamp(38px, 7.2vw, 64px);
+        font-weight: 800;
+        letter-spacing: 1px;
+        cursor: pointer;
+        user-select: none;
+        transition: transform 140ms ease, background 140ms ease, border 140ms ease,
+          box-shadow 140ms ease, color 140ms ease;
+        will-change: transform;
+      }
+
+      .cell:hover {
+        background: #0e1728;
+        transform: translateY(-2px);
+      }
+
+      .cell.X { color: var(--x); }
+      .cell.O { color: var(--o); }
+
+      .cell.win {
+        background: linear-gradient(160deg, #0e1728, #0e1728 70%, #0e1728);
+        box-shadow: inset 0 0 0 2px #ffd16666, 0 12px 24px rgba(0,0,0,0.28);
+        transform: scale(1.02);
+      }
+
+      .footer {
+        padding: 10px 16px 16px 16px;
+        color: var(--muted);
+        font-size: 12px;
+        text-align: right;
+      }
+
+      .hidden { display: none !important; }
+
+      @media (max-width: 560px) {
+        .topbar { grid-template-columns: 1fr; }
+        .status { text-align: left; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="card">
+        <div class="topbar title">
+          <h1>井字遊戲</h1>
+          <div class="status" id="status">準備開始</div>
+        </div>
+        <div class="controls">
+          <div class="control">
+            <label for="mode">模式</label>
+            <select id="mode">
+              <option value="pvp">玩家對戰</option>
+              <option value="ai">玩家 vs 電腦</option>
+            </select>
+          </div>
+          <div class="control" id="difficultyWrap">
+            <label for="difficulty">電腦難度</label>
+            <select id="difficulty">
+              <option value="easy">簡單</option>
+              <option value="medium" selected>中等</option>
+              <option value="hard">困難</option>
+            </select>
+          </div>
+          <div class="control">
+            <button id="reset">重置</button>
+            <button id="undo">悔棋</button>
+          </div>
+        </div>
+
+        <div id="board" class="board"></div>
+
+        <div class="scores">
+          <div>X 勝場：<strong id="scoreX">0</strong></div>
+          <div>O 勝場：<strong id="scoreO">0</strong></div>
+          <div>平手：<strong id="scoreDraw">0</strong></div>
+        </div>
+        <div class="footer">Tic-Tac-Toe • 最佳化的難度含 Minimax</div>
+      </div>
+    </div>
+
+    <script>
+      'use strict';
+
+      const boardElement = document.getElementById('board');
+      const statusElement = document.getElementById('status');
+      const resetButton = document.getElementById('reset');
+      const undoButton = document.getElementById('undo');
+      const modeSelect = document.getElementById('mode');
+      const difficultySelect = document.getElementById('difficulty');
+      const difficultyWrap = document.getElementById('difficultyWrap');
+      const scoreXElement = document.getElementById('scoreX');
+      const scoreOElement = document.getElementById('scoreO');
+      const scoreDrawElement = document.getElementById('scoreDraw');
+
+      let board = Array(9).fill(null);
+      let currentPlayer = 'X';
+      let gameActive = true;
+      let moveHistory = [];
+      let mode = 'pvp';
+      let difficulty = 'medium';
+      let scores = { X: 0, O: 0, draw: 0 };
+
+      function initializeBoardUI() {
+        boardElement.innerHTML = '';
+        for (let i = 0; i < 9; i += 1) {
+          const cell = document.createElement('button');
+          cell.className = 'cell';
+          cell.setAttribute('data-index', String(i));
+          cell.addEventListener('click', () => handleCellClick(i));
+          boardElement.appendChild(cell);
+        }
+      }
+
+      function renderBoard() {
+        for (let i = 0; i < 9; i += 1) {
+          const cell = boardElement.children[i];
+          const mark = board[i];
+          cell.textContent = mark ? mark : '';
+          cell.classList.toggle('X', mark === 'X');
+          cell.classList.toggle('O', mark === 'O');
+          cell.classList.remove('win');
+        }
+      }
+
+      function updateStatus(text) {
+        if (text) {
+          statusElement.textContent = text;
+          return;
+        }
+        if (!gameActive) return;
+        statusElement.textContent = currentPlayer === 'X' ? '輪到 X' : '輪到 O';
+      }
+
+      function handleCellClick(index) {
+        if (!gameActive || board[index]) return;
+        snapshot();
+        makeMove(index, currentPlayer);
+        const outcome = getOutcome(board);
+        if (outcome) {
+          finishGame(outcome);
+          return;
+        }
+        swapTurn();
+        if (mode === 'ai' && currentPlayer === 'O') {
+          setTimeout(() => {
+            aiPlay();
+          }, 140);
+        }
+      }
+
+      function makeMove(index, mark) {
+        board[index] = mark;
+        renderBoard();
+      }
+
+      function swapTurn() {
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        updateStatus();
+      }
+
+      function getWinningLines() {
+        return [
+          [0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8],
+          [0, 3, 6],
+          [1, 4, 7],
+          [2, 5, 8],
+          [0, 4, 8],
+          [2, 4, 6],
+        ];
+      }
+
+      function getOutcome(b) {
+        const lines = getWinningLines();
+        for (const [a, c, d] of lines) {
+          if (b[a] && b[a] === b[c] && b[a] === b[d]) {
+            return { type: 'win', winner: b[a], line: [a, c, d] };
+          }
+        }
+        if (b.every((v) => v)) return { type: 'draw' };
+        return null;
+      }
+
+      function finishGame(outcome) {
+        gameActive = false;
+        if (outcome.type === 'win') {
+          outcome.line.forEach((i) => {
+            boardElement.children[i].classList.add('win');
+          });
+          scores[outcome.winner] += 1;
+          statusElement.textContent = `${outcome.winner} 勝利！`;
+        } else {
+          scores.draw += 1;
+          statusElement.textContent = '平手';
+        }
+        reflectScores();
+      }
+
+      function reflectScores() {
+        scoreXElement.textContent = String(scores.X);
+        scoreOElement.textContent = String(scores.O);
+        scoreDrawElement.textContent = String(scores.draw);
+      }
+
+      function resetGame(keepScores = true) {
+        board = Array(9).fill(null);
+        currentPlayer = 'X';
+        gameActive = true;
+        moveHistory = [];
+        renderBoard();
+        updateStatus('新的對局，輪到 X');
+        if (!keepScores) {
+          scores = { X: 0, O: 0, draw: 0 };
+          reflectScores();
+        }
+      }
+
+      function snapshot() {
+        moveHistory.push({ board: [...board], currentPlayer, gameActive });
+      }
+
+      function undoMove() {
+        if (moveHistory.length === 0) return;
+        const prev = moveHistory.pop();
+        board = prev.board;
+        currentPlayer = prev.currentPlayer;
+        gameActive = prev.gameActive;
+        renderBoard();
+        updateStatus();
+      }
+
+      function aiPlay() {
+        if (!gameActive) return;
+        const empty = board
+          .map((v, i) => (v ? null : i))
+          .filter((x) => x !== null);
+        if (empty.length === 0) return;
+
+        let index = -1;
+        if (difficulty === 'easy') {
+          index = empty[Math.floor(Math.random() * empty.length)];
+        } else if (difficulty === 'medium') {
+          const useBest = Math.random() < 0.6;
+          index = useBest ? bestMoveFor('O') : empty[Math.floor(Math.random() * empty.length)];
+        } else {
+          index = bestMoveFor('O');
+        }
+
+        snapshot();
+        makeMove(index, 'O');
+        const outcome = getOutcome(board);
+        if (outcome) {
+          finishGame(outcome);
+          return;
+        }
+        swapTurn();
+      }
+
+      function bestMoveFor(aiMark) {
+        const opponent = aiMark === 'X' ? 'O' : 'X';
+
+        function minimax(state, player) {
+          const outcome = getOutcome(state);
+          if (outcome) {
+            if (outcome.type === 'draw') return { score: 0 };
+            if (outcome.winner === aiMark) return { score: 10 };
+            return { score: -10 };
+          }
+
+          const available = state
+            .map((v, i) => (v ? null : i))
+            .filter((x) => x !== null);
+
+          let best = null;
+          if (player === aiMark) {
+            let maxEval = -Infinity;
+            for (const idx of available) {
+              const next = [...state];
+              next[idx] = player;
+              const evalResult = minimax(next, opponent).score;
+              if (evalResult > maxEval) {
+                maxEval = evalResult;
+                best = { index: idx, score: maxEval };
+              }
+            }
+            return best;
+          } else {
+            let minEval = Infinity;
+            for (const idx of available) {
+              const next = [...state];
+              next[idx] = player;
+              const evalResult = minimax(next, aiMark).score;
+              if (evalResult < minEval) {
+                minEval = evalResult;
+                best = { index: idx, score: minEval };
+              }
+            }
+            return best;
+          }
+        }
+
+        // First, try immediate win or block for speed
+        const empty = board
+          .map((v, i) => (v ? null : i))
+          .filter((x) => x !== null);
+        for (const idx of empty) {
+          const test = [...board];
+          test[idx] = aiMark;
+          const oc = getOutcome(test);
+          if (oc && oc.type === 'win' && oc.winner === aiMark) return idx;
+        }
+        for (const idx of empty) {
+          const test = [...board];
+          test[idx] = opponent;
+          const oc = getOutcome(test);
+          if (oc && oc.type === 'win' && oc.winner === opponent) return idx;
+        }
+
+        const result = minimax([...board], aiMark);
+        return result?.index ?? empty[0];
+      }
+
+      function onModeChange() {
+        mode = modeSelect.value;
+        difficultyWrap.classList.toggle('hidden', mode !== 'ai');
+        resetGame(true);
+      }
+
+      function onDifficultyChange() {
+        difficulty = difficultySelect.value;
+        if (mode === 'ai') resetGame(true);
+      }
+
+      function bindEvents() {
+        resetButton.addEventListener('click', () => resetGame(true));
+        undoButton.addEventListener('click', () => undoMove());
+        modeSelect.addEventListener('change', onModeChange);
+        difficultySelect.addEventListener('change', onDifficultyChange);
+      }
+
+      function init() {
+        initializeBoardUI();
+        bindEvents();
+        onModeChange();
+        reflectScores();
+      }
+
+      init();
+    </script>
+  </body>
+  </html>
+
+
