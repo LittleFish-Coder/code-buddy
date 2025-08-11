@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>井字遊戲 - Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>井字遊戲</h1>
+        <div class="game-info">
+            <div class="current-player">
+                輪到：<span id="currentPlayer">X</span>
+            </div>
+            <div class="score">
+                <span class="player-x">X: <span id="scoreX">0</span></span>
+                <span class="player-o">O: <span id="scoreO">0</span></span>
+            </div>
+        </div>
+        
+        <div class="game-board" id="gameBoard">
+            <div class="cell" data-cell="0"></div>
+            <div class="cell" data-cell="1"></div>
+            <div class="cell" data-cell="2"></div>
+            <div class="cell" data-cell="3"></div>
+            <div class="cell" data-cell="4"></div>
+            <div class="cell" data-cell="5"></div>
+            <div class="cell" data-cell="6"></div>
+            <div class="cell" data-cell="7"></div>
+            <div class="cell" data-cell="8"></div>
+        </div>
+        
+        <div class="game-status" id="gameStatus"></div>
+        
+        <div class="buttons">
+            <button id="resetBtn" class="btn">重新開始</button>
+            <button id="newGameBtn" class="btn">新遊戲</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
