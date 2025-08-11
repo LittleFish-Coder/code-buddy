@@ -1,28 +1,31 @@
 # Code Buddy
 
-GitHub Copilot vs Gemini Code Assist vs Amazon Q Developer
+Check out the demo:
+https://littlefish-coder.github.io/code-buddy/
 
-| Github Copilot | Gemini Code Assist | Amazon Q Developer |
-|----------------|--------------------|---------------------|
-| <img src="./src/github_copilot.png" alt="GitHub Copilot" width="50" /> | <img src="./src/gemini_code_assist.png" alt="Gemini Code Assist" width="50" /> | <img src="./src/amazon_q_developer.png" alt="Amazon Q Developer" width="50" /> |
+## AI Tools
+| Github Copilot | Gemini Code Assist & Gemini Code CLI | Amazon Q Developer | Claude Code CLI | Cursor & Cursor Agent CLI|
+|----------------|--------------------|---------------------|-----------------|-----------------|
+| <img src="./src/github_copilot.png" alt="GitHub Copilot" width="50" /> | <img src="./src/gemini_code_assist.png" alt="Gemini Code Assist" width="50" /> | <img src="./src/amazon_q_developer.png" alt="Amazon Q Developer" width="50" /> | <img src="./src/claude_code_cli.png" alt="Claude Code CLI" width="50" /> | <img src="./src/cursor.png" alt="Cursor" width="50" /> |
 
 ## Price
 
-## Scenario
-
 ## Prompts
 
-use the prompt below to test each AI
+use the prompt below to test each AI Tool
 ```
 請提供我井字遊戲在網頁版
 ```
 
-```
-建立一個 HTML5 網頁，用於線上「石頭、剪刀、布」遊戲，可以與電腦對戰，使用人手圖示作為視覺效果
-```
+## Summary
 
-### GitHub Copilot Results
+- Github Copilot Agent with multiple models performed consistently well.
 
-### Gemini Code Assist Results
+- Claude models (whether native Claude Code, Cursor Agent with Claude, or Github Copilot with Claude) tended to generate websites with more colors and better design aesthetics.
 
-### Amazon Q Developer Results
+- Amazon Q Developer only produced a single `index.html` file — no `style.css` or `script.js`.
+
+- Gemini Code Assist & Gemini Code CLI were very basic, and in some cases, not even usable.
+
+## Reference
+- AWS Cloud Summit Workshop: [cheng-ruru/AmazonQ_Lab](https://github.com/cheng-ruru/AmazonQ_Lab)
