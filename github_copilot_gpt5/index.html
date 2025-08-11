@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>井字遊戲 Tic Tac Toe</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <h1>井字遊戲 <small>Tic Tac Toe</small></h1>
+
+    <section class="controls">
+      <div class="mode-group" role="group" aria-label="遊戲模式">
+        <button id="modePvP" class="mode-btn active" data-mode="pvp">雙人對戰</button>
+        <button id="modePvE" class="mode-btn" data-mode="pve">人機對戰</button>
+      </div>
+      <button id="restartBtn" class="restart" aria-label="重新開始">重新開始 ↺</button>
+    </section>
+
+    <section class="status" aria-live="polite">
+      輪到：<span id="turnIndicator" class="turn">X</span>
+    </section>
+
+    <section class="board" id="board" role="grid" aria-label="井字棋盤">
+      <!-- 9 cells -->
+    </section>
+
+    <dialog id="resultDialog" class="result-dialog">
+      <p id="resultText"></p>
+      <form method="dialog">
+        <button id="playAgainBtn">再玩一次</button>
+      </form>
+    </dialog>
+
+    <footer class="footer">
+      <p>鍵盤可用：使用 Tab 選格，Enter/Space 下子。 | 作者：GitHub Copilot</p>
+      <p><a href="https://zh.wikipedia.org/wiki/井字棋" target="_blank" rel="noopener">井字棋維基百科</a></p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
