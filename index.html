@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 模型井字遊戲性能比較</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #ffd700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .game-button {
+            background: linear-gradient(145deg, #4a90e2, #357abd);
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .game-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: linear-gradient(145deg, #5ba0f2, #4080cd);
+        }
+
+        .game-button:active {
+            transform: translateY(-1px);
+        }
+
+        .cursor-series {
+            background: linear-gradient(145deg, #ff6b6b, #ee5a52);
+        }
+
+        .cursor-series:hover {
+            background: linear-gradient(145deg, #ff7b7b, #fe6a62);
+        }
+
+        .github-copilot-series {
+            background: linear-gradient(145deg, #2ecc71, #27ae60);
+        }
+
+        .github-copilot-series:hover {
+            background: linear-gradient(145deg, #3edc81, #37be70);
+        }
+
+        .cli-tools-series {
+            background: linear-gradient(145deg, #f39c12, #e67e22);
+        }
+
+        .cli-tools-series:hover {
+            background: linear-gradient(145deg, #f4ac22, #f68e32);
+        }
+
+        .google-series {
+            background: linear-gradient(145deg, #9b59b6, #8e44ad);
+        }
+
+        .google-series:hover {
+            background: linear-gradient(145deg, #ab69c6, #9e54bd);
+        }
+
+        .amazon-series {
+            background: linear-gradient(145deg, #e74c3c, #c0392b);
+        }
+
+        .amazon-series:hover {
+            background: linear-gradient(145deg, #f75c4c, #d0493b);
+        }
+
+        .model-info {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .stats-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 AI 模型井字遊戲性能比較</h1>
+        <p class="subtitle">比較不同 AI 模型在編寫井字遊戲時的表現與特色</p>
+
+        <div class="section">
+            <h2 class="section-title">🚀 Cursor IDE 系列</h2>
+            <div class="button-grid">
+                <a href="cursor_claude_4/index.html" class="game-button cursor-series">
+                    <div>Cursor + Claude 4</div>
+                    <div class="model-info">最新 Claude 4 模型整合</div>
+                </a>
+                <a href="cursor_gemini_2.5_pro/index.html" class="game-button cursor-series">
+                    <div>Cursor + Gemini 2.5 Pro</div>
+                    <div class="model-info">Google 最強多模態模型</div>
+                </a>
+                <a href="cursor_gpt_5/index.html" class="game-button cursor-series">
+                    <div>Cursor + GPT-5</div>
+                    <div class="model-info">OpenAI 次世代模型</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">🐙 GitHub Copilot 系列</h2>
+            <div class="button-grid">
+                <a href="github_copilot_claude_4/index.html" class="game-button github-copilot-series">
+                    <div>GitHub Copilot + Claude 4</div>
+                    <div class="model-info">GitHub 與 Anthropic 合作</div>
+                </a>
+                <a href="github_copilot_gemini_2.5_pro/index.html" class="game-button github-copilot-series">
+                    <div>GitHub Copilot + Gemini 2.5 Pro</div>
+                    <div class="model-info">GitHub 與 Google 整合</div>
+                </a>
+                <a href="github_copilot_gpt_4.1/index.html" class="game-button github-copilot-series">
+                    <div>GitHub Copilot + GPT-4.1</div>
+                    <div class="model-info">改良版 GPT-4 模型</div>
+                </a>
+                <a href="github_copilot_gpt_5/index.html" class="game-button github-copilot-series">
+                    <div>GitHub Copilot + GPT-5</div>
+                    <div class="model-info">最新 OpenAI 模型</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">💻 CLI 工具系列</h2>
+            <div class="button-grid">
+                <a href="claude_code_cli/index.html" class="game-button cli-tools-series">
+                    <div>Claude Code CLI</div>
+                    <div class="model-info">Anthropic 官方命令列工具</div>
+                </a>
+                <a href="gemini_cli/index.html" class="game-button cli-tools-series">
+                    <div>Gemini CLI</div>
+                    <div class="model-info">Google Gemini 命令列版本</div>
+                </a>
+                <a href="cursor_agent_cli/index.html" class="game-button cli-tools-series">
+                    <div>Cursor Agent CLI</div>
+                    <div class="model-info">命令列智能助手</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">🔧 專業開發工具</h2>
+            <div class="button-grid">
+                <a href="gemini_code_assist/index.html" class="game-button google-series">
+                    <div>Gemini Code Assist</div>
+                    <div class="model-info">Google Cloud 程式碼助手</div>
+                </a>
+                <a href="amazon_q_developer/tic-tac-toe.html" class="game-button amazon-series">
+                    <div>Amazon Q Developer</div>
+                    <div class="model-info">AWS 智能開發助手</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="stats-info">
+            <h3>📊 比較重點</h3>
+            <p>每個 AI 模型都實現了相同的井字遊戲功能，但在程式碼風格、效能優化、使用者體驗等方面可能有所不同。</p>
+            <p>點擊任一按鈕即可體驗該模型生成的井字遊戲版本！</p>
+        </div>
+
+        <div class="footer">
+            <p>🤖 AI 模型性能比較專案 | 探索不同 AI 助手的程式設計能力</p>
+        </div>
+    </div>
+
+    <script>
+        // 添加按鈕點擊效果
+        document.querySelectorAll('.game-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // 創建點擊波紋效果
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+                ripple.style.pointerEvents = 'none';
+                ripple.style.animation = 'ripple 0.6s linear';
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // 添加 CSS 動畫
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 統計信息
+        console.log('🎮 AI 模型井字遊戲比較平台');
+        console.log('📊 總共包含', document.querySelectorAll('.game-button').length, '個不同的 AI 模型版本');
+        
+        // 加載統計
+        window.addEventListener('load', function() {
+            console.log('✅ 頁面載入完成，準備開始 AI 模型比較！');
+        });
+    </script>
+</body>
+</html>
