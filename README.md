@@ -8,9 +8,7 @@ https://littlefish-coder.github.io/code-buddy/
 |----------------|--------------------|---------------------|-----------------|-----------------|
 | <img src="./src/github_copilot.png" alt="GitHub Copilot" width="50" /> | <img src="./src/gemini_code_assist.png" alt="Gemini Code Assist" width="50" /> | <img src="./src/amazon_q_developer.png" alt="Amazon Q Developer" width="50" /> | <img src="./src/claude_code_cli.png" alt="Claude Code CLI" width="50" /> | <img src="./src/cursor.png" alt="Cursor" width="50" /> |
 
-## Price
-
-## Prompts
+## Prompt
 
 use the prompt below to test each AI Tool
 ```
